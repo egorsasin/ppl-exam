@@ -6,7 +6,7 @@ import { toShuffledAnswers } from "../lib/questions";
 import type { QuestionCardProps } from "./QuestionCard.types";
 import { getOptionClass } from "./QuestionCard.utils";
 
-function QuestionCard({ question }: QuestionCardProps) {
+function QuestionCard({ question, onAnswer }: QuestionCardProps) {
   // Shuffle once per question so the order is stable across re-renders.
   const options: AnswerOption[] = useMemo(
     () => toShuffledAnswers(question),
@@ -15,6 +15,11 @@ function QuestionCard({ question }: QuestionCardProps) {
 
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const isAnswered = selectedIndex !== null;
+
+  function handleSelect(index: number) {
+    setSelectedIndex(index);
+    onAnswer();
+  }
 
   return (
     <article className='flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm'>
@@ -32,7 +37,7 @@ function QuestionCard({ question }: QuestionCardProps) {
             <button
               type='button'
               disabled={isAnswered}
-              onClick={() => setSelectedIndex(index)}
+              onClick={() => handleSelect(index)}
               className={getOptionClass(option, index, selectedIndex)}
             >
               {option.text}

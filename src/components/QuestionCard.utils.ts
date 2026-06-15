@@ -18,11 +18,14 @@ export function getOptionClass(
   if (!isAnswered) {
     return `${BASE_OPTION_CLASS} cursor-pointer border-gray-200 text-gray-800 hover:bg-gray-50 active:bg-gray-100`;
   }
+
   if (option.isCorrect) {
     return `${BASE_OPTION_CLASS} border-green-500 bg-green-50 text-green-900`;
   }
+
   if (index === selectedIndex) {
     return `${BASE_OPTION_CLASS} border-red-500 bg-red-50 text-red-900`;
   }
+
   return `${BASE_OPTION_CLASS} border-gray-200 text-gray-400`;
 }
