@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Raw question source — will be turned into a DB later, kept out of git
+/data
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
