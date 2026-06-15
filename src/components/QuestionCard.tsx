@@ -18,7 +18,7 @@ function QuestionCard({ question, onAnswer }: QuestionCardProps) {
 
   function handleSelect(index: number) {
     setSelectedIndex(index);
-    onAnswer();
+    onAnswer(options[index].isCorrect);
   }
 
   return (

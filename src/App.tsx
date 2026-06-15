@@ -3,6 +3,7 @@ import { useState } from "react";
 import questionsData from "../data/data.json";
 
 import FinishScreen from "./components/FinishScreen";
+import ProgressHeader from "./components/ProgressHeader";
 import QuestionCard from "./components/QuestionCard";
 import { shuffle } from "./lib/shuffle";
 import type { Question } from "./types";
@@ -14,17 +15,24 @@ function App() {
   const [deck, setDeck] = useState<Question[]>(() => shuffle(questions));
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answered, setAnswered] = useState(false);
+  const [correctCount, setCorrectCount] = useState(0);
   const [finished, setFinished] = useState(false);
 
   const question = deck[currentIndex];
   const isLast = currentIndex === deck.length - 1;
+
+  function handleAnswer(isCorrect: boolean) {
+    setAnswered(true);
+    if (isCorrect) {
+      setCorrectCount((count) => count + 1);
+    }
+  }
 
   function handleNext() {
     if (isLast) {
       setFinished(true);
       return;
     }
-
     setAnswered(false);
     setCurrentIndex((index) => index + 1);
   }
@@ -33,20 +41,31 @@ function App() {
     setDeck(shuffle(questions));
     setCurrentIndex(0);
     setAnswered(false);
+    setCorrectCount(0);
     setFinished(false);
   }
 
   return (
-    <main className='flex min-h-screen w-full items-center justify-center bg-gray-50 px-4 py-6'>
+    <main className='flex min-h-dvh w-full items-center justify-center bg-gray-50 px-4 py-6'>
       <div className='flex w-full max-w-3xl flex-col gap-4'>
         {finished ? (
-          <FinishScreen onRestart={handleRestart} />
+          <FinishScreen
+            correct={correctCount}
+            total={deck.length}
+            onRestart={handleRestart}
+          />
         ) : (
           <>
+            <ProgressHeader
+              current={currentIndex + 1}
+              total={deck.length}
+              correct={correctCount}
+            />
+
             <QuestionCard
               key={question.questionNumber}
               question={question}
-              onAnswer={() => setAnswered(true)}
+              onAnswer={handleAnswer}
             />
 
             <button

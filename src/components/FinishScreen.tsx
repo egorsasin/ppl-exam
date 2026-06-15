@@ -1,11 +1,18 @@
 import type { FinishScreenProps } from "./FinishScreen.types";
 
-function FinishScreen({ onRestart }: FinishScreenProps) {
+function FinishScreen({ correct, total, onRestart }: FinishScreenProps) {
+  const percent = total > 0 ? Math.round((correct / total) * 100) : 0;
+
   return (
     <article className='flex flex-col items-center gap-4 rounded-2xl border border-gray-200 bg-white p-8 text-center shadow-sm'>
       <h2 className='text-xl font-semibold text-gray-900'>Test ukończony</h2>
+
       <p className='text-base text-gray-600'>
-        Przeszedłeś przez wszystkie pytania.
+        Wynik:{" "}
+        <span className='font-semibold text-gray-900'>
+          {correct} / {total}
+        </span>{" "}
+        ({percent}%)
       </p>
 
       <button
