@@ -14,3 +14,6 @@ export interface AnswerOption {
   text: string;
   isCorrect: boolean;
 }
+
+/** Per-question progress state shown in the question map sidebar. */
+export type QuestionStatus = "unanswered" | "correct" | "wrong";

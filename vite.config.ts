@@ -4,7 +4,8 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  // Served from https://<user>.github.io/ppl-exam/ on GitHub Pages.
-  base: '/ppl-exam/',
+  // Relative base so the build works both locally (at /) and under the
+  // /ppl-exam/ path on GitHub Pages.
+  base: './',
   plugins: [react(), tailwindcss()],
 })
