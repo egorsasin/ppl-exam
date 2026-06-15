@@ -8,7 +8,10 @@ function App() {
   return (
     <main className="flex min-h-screen w-full items-center justify-center bg-gray-50 px-4 py-6">
       <div className="w-full max-w-3xl">
-        <QuestionCard question={questions[0]} />
+        <QuestionCard
+          key={questions[0].questionNumber}
+          question={questions[0]}
+        />
       </div>
     </main>
   );
