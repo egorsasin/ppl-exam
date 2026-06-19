@@ -5,4 +5,8 @@ export interface QuestionMapProps {
   statuses: QuestionStatus[];
   /** Index of the question currently shown, or -1 when none. */
   currentIndex: number;
+  /** Whether the drawer is open. */
+  open: boolean;
+  /** Closes the drawer. */
+  onClose: () => void;
 }
