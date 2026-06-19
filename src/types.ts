@@ -17,3 +17,11 @@ export interface AnswerOption {
 
 /** Per-question progress state shown in the question map sidebar. */
 export type QuestionStatus = "unanswered" | "correct" | "wrong";
+
+/** A persisted exam attempt: the fixed set of questions and current progress. */
+export interface ExamSession {
+  /** Identifiers of the selected questions, in fixed order. */
+  questionNumbers: string[];
+  /** Index of the question the user is currently on. */
+  currentIndex: number;
+}
