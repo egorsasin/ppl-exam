@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import questionsData from "../../data/data.json";
@@ -7,6 +7,7 @@ import FinishScreen from "../components/FinishScreen";
 import ProgressHeader from "../components/ProgressHeader";
 import QuestionCard from "../components/QuestionCard";
 import QuestionMap from "../components/QuestionMap";
+import { toShuffledAnswers } from "../lib/questions";
 import { shuffle } from "../lib/shuffle";
 import type { Question, QuestionStatus } from "../types";
 
@@ -20,20 +21,32 @@ function ReviewPage() {
   // Shuffle the deck once on start; reshuffled on restart.
   const [deck, setDeck] = useState<Question[]>(() => shuffle(questions));
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [answered, setAnswered] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
   const [statuses, setStatuses] = useState<QuestionStatus[]>(createStatuses);
   const [finished, setFinished] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
 
   const question = deck[currentIndex];
+  const options = useMemo(() => toShuffledAnswers(question), [question]);
   const isLast = currentIndex === deck.length - 1;
+  const answered = selectedIndex !== null;
 
-  function handleAnswer(isCorrect: boolean) {
-    setAnswered(true);
+  function handleSelect(originalIndex: number) {
+    if (answered) {
+      return;
+    }
+
+    setSelectedIndex(originalIndex);
+
+    const isCorrect = options.some(
+      (option) => option.originalIndex === originalIndex && option.isCorrect,
+    );
+
     if (isCorrect) {
       setCorrectCount((count) => count + 1);
     }
+
     setStatuses((prev) => {
       const next = [...prev];
       next[currentIndex] = isCorrect ? "correct" : "wrong";
@@ -46,14 +59,14 @@ function ReviewPage() {
       setFinished(true);
       return;
     }
-    setAnswered(false);
+    setSelectedIndex(null);
     setCurrentIndex((index) => index + 1);
   }
 
   function handleRestart() {
     setDeck(shuffle(questions));
     setCurrentIndex(0);
-    setAnswered(false);
+    setSelectedIndex(null);
     setCorrectCount(0);
     setStatuses(createStatuses());
     setFinished(false);
@@ -96,7 +109,10 @@ function ReviewPage() {
               stroke='currentColor'
               strokeWidth='2'
             >
-              <path d='M4 6h16M4 12h16M4 18h16' strokeLinecap='round' />
+              <path
+                d='M4 6h16M4 12h16M4 18h16'
+                strokeLinecap='round'
+              />
             </svg>
           </button>
         </div>
@@ -116,9 +132,11 @@ function ReviewPage() {
             />
 
             <QuestionCard
-              key={question.id}
               question={question}
-              onAnswer={handleAnswer}
+              options={options}
+              selectedIndex={selectedIndex}
+              revealResult
+              onSelect={handleSelect}
             />
 
             <button

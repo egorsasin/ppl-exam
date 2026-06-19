@@ -1,4 +1,4 @@
-import type { QuestionStatus } from "../types";
+import type { QuestionStatus } from "../../types";
 
 export interface QuestionMapProps {
   /** Status of every question in deck order. */
@@ -9,4 +9,6 @@ export interface QuestionMapProps {
   open: boolean;
   /** Closes the drawer. */
   onClose: () => void;
+  /** When set, tiles are clickable and call this with the target index. */
+  onSelect?: (index: number) => void;
 }

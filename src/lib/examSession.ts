@@ -16,6 +16,7 @@ export function createExamSession(): ExamSession {
   return {
     questionIds: picked.map((question) => question.id),
     currentIndex: 0,
+    answers: Array<number | null>(picked.length).fill(null),
   };
 }
 
@@ -30,7 +31,8 @@ export function loadExamSession(): ExamSession | null {
     const parsed = JSON.parse(raw) as Partial<ExamSession>;
     const isValid =
       Array.isArray(parsed.questionIds) &&
-      typeof parsed.currentIndex === "number";
+      typeof parsed.currentIndex === "number" &&
+      Array.isArray(parsed.answers);
 
     return isValid ? (parsed as ExamSession) : null;
   } catch {

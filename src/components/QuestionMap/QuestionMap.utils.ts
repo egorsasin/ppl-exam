@@ -1,4 +1,4 @@
-import type { QuestionStatus } from "../types";
+import type { QuestionStatus } from "../../types";
 
 const BASE_TILE_CLASS =
   "flex h-9 w-9 items-center justify-center rounded-md border text-xs font-medium";
@@ -19,6 +19,10 @@ export function getTileClass(
 
   if (status === "wrong") {
     return `${BASE_TILE_CLASS} border-red-600 bg-red-600 text-white${current}`;
+  }
+
+  if (status === "answered") {
+    return `${BASE_TILE_CLASS} border-blue-600 bg-blue-600 text-white${current}`;
   }
 
   return `${BASE_TILE_CLASS} border-gray-600 bg-transparent text-gray-600${current}`;

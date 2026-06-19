@@ -1,7 +1,13 @@
 import type { QuestionMapProps } from "./QuestionMap.types";
 import { getTileClass } from "./QuestionMap.utils";
 
-function QuestionMap({ statuses, currentIndex, open, onClose }: QuestionMapProps) {
+function QuestionMap({
+  statuses,
+  currentIndex,
+  open,
+  onClose,
+  onSelect,
+}: QuestionMapProps) {
   return (
     <>
       <div
@@ -38,12 +44,17 @@ function QuestionMap({ statuses, currentIndex, open, onClose }: QuestionMapProps
 
         <div className='flex flex-wrap gap-1.5 overflow-y-auto p-4'>
           {statuses.map((status, index) => (
-            <div
+            <button
               key={index}
-              className={getTileClass(status, index === currentIndex)}
+              type='button'
+              disabled={!onSelect}
+              onClick={() => onSelect?.(index)}
+              className={`${getTileClass(status, index === currentIndex)}${
+                onSelect ? " cursor-pointer" : ""
+              }`}
             >
               {index + 1}
-            </div>
+            </button>
           ))}
         </div>
       </aside>
