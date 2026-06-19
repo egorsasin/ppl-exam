@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import questionsData from "../../data/data.json";
 
@@ -61,6 +62,45 @@ function ReviewPage() {
   return (
     <main className='flex min-h-dvh w-full justify-center bg-gray-50 px-4 py-6'>
       <div className='flex w-full max-w-3xl flex-col gap-4'>
+        <div className='flex items-center justify-between'>
+          <Link
+            to='/'
+            aria-label='Strona główna'
+            className='cursor-pointer rounded-xl border border-gray-200 bg-white p-2.5 text-gray-700 shadow-sm hover:bg-gray-50'
+          >
+            <svg
+              className='h-5 w-5'
+              viewBox='0 0 24 24'
+              fill='none'
+              stroke='currentColor'
+              strokeWidth='2'
+            >
+              <path
+                d='M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10'
+                strokeLinecap='round'
+                strokeLinejoin='round'
+              />
+            </svg>
+          </Link>
+
+          <button
+            type='button'
+            onClick={() => setMapOpen(true)}
+            aria-label='Pokaż pytania'
+            className='cursor-pointer rounded-xl border border-gray-200 bg-white p-2.5 text-gray-700 shadow-sm hover:bg-gray-50'
+          >
+            <svg
+              className='h-5 w-5'
+              viewBox='0 0 24 24'
+              fill='none'
+              stroke='currentColor'
+              strokeWidth='2'
+            >
+              <path d='M4 6h16M4 12h16M4 18h16' strokeLinecap='round' />
+            </svg>
+          </button>
+        </div>
+
         {finished ? (
           <FinishScreen
             correct={correctCount}
@@ -92,23 +132,6 @@ function ReviewPage() {
           </>
         )}
       </div>
-
-      <button
-        type='button'
-        onClick={() => setMapOpen(true)}
-        aria-label='Pokaż pytania'
-        className='fixed top-4 right-4 z-20 cursor-pointer rounded-xl border border-gray-200 bg-white p-2.5 text-gray-700 shadow-sm hover:bg-gray-50'
-      >
-        <svg
-          className='h-5 w-5'
-          viewBox='0 0 24 24'
-          fill='none'
-          stroke='currentColor'
-          strokeWidth='2'
-        >
-          <path d='M4 6h16M4 12h16M4 18h16' strokeLinecap='round' />
-        </svg>
-      </button>
 
       <QuestionMap
         statuses={statuses}
