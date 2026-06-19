@@ -14,7 +14,7 @@ export function createExamSession(): ExamSession {
   const picked = shuffle(questions).slice(0, EXAM_SIZE);
 
   return {
-    questionNumbers: picked.map((question) => question.questionNumber),
+    questionIds: picked.map((question) => question.id),
     currentIndex: 0,
   };
 }
@@ -23,8 +23,16 @@ export function createExamSession(): ExamSession {
 export function loadExamSession(): ExamSession | null {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) {
+      return null;
+    }
 
-    return raw ? (JSON.parse(raw) as ExamSession) : null;
+    const parsed = JSON.parse(raw) as Partial<ExamSession>;
+    const isValid =
+      Array.isArray(parsed.questionIds) &&
+      typeof parsed.currentIndex === "number";
+
+    return isValid ? (parsed as ExamSession) : null;
   } catch {
     return null;
   }

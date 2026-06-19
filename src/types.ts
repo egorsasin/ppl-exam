@@ -1,5 +1,7 @@
 export interface Question {
-  /** Question identifier */
+  /** Unique identifier (questionNumber is not unique). */
+  id: number;
+  /** Question number label (not unique). */
   questionNumber: string;
   /** Question text */
   question: string;
@@ -20,8 +22,8 @@ export type QuestionStatus = "unanswered" | "correct" | "wrong";
 
 /** A persisted exam attempt: the fixed set of questions and current progress. */
 export interface ExamSession {
-  /** Identifiers of the selected questions, in fixed order. */
-  questionNumbers: string[];
+  /** Ids of the selected questions, in fixed order. */
+  questionIds: number[];
   /** Index of the question the user is currently on. */
   currentIndex: number;
 }

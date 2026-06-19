@@ -54,7 +54,7 @@ function ExamPage() {
               Egzamin w toku
             </h1>
             <p className='text-gray-600'>
-              Pytanie {session.currentIndex + 1} / {session.questionNumbers.length}
+              Pytanie {session.currentIndex + 1} / {session.questionIds.length}
             </p>
 
             <button

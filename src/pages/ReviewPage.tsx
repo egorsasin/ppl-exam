@@ -116,7 +116,7 @@ function ReviewPage() {
             />
 
             <QuestionCard
-              key={question.questionNumber}
+              key={question.id}
               question={question}
               onAnswer={handleAnswer}
             />
