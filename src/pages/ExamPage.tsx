@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+import ExamResult from "../components/ExamResult";
 import QuestionCard from "../components/QuestionCard";
 import QuestionMap from "../components/QuestionMap";
 import {
@@ -82,7 +83,19 @@ function ExamPage() {
     );
   }
 
-  const { questionIds, currentIndex, answers } = session;
+  const { questionIds, currentIndex, answers, finished } = session;
+
+  if (finished) {
+    return (
+      <main className='flex min-h-dvh w-full justify-center bg-gray-50 px-4 py-6'>
+        <div className='flex w-full max-w-md flex-col gap-4'>
+          <div className='self-start'>{homeButton}</div>
+          <ExamResult onRestart={handleStart} />
+        </div>
+      </main>
+    );
+  }
+
   const total = questionIds.length;
   const question = getQuestionById(questionIds[currentIndex]);
   const options = question ? toExamAnswers(question) : [];
@@ -96,13 +109,17 @@ function ExamPage() {
   );
 
   function goTo(index: number) {
-    update({ questionIds, currentIndex: index, answers });
+    update({ questionIds, currentIndex: index, answers, finished });
   }
 
   function handleSelect(originalIndex: number) {
     const nextAnswers = [...answers];
     nextAnswers[currentIndex] = originalIndex;
-    update({ questionIds, currentIndex, answers: nextAnswers });
+    update({ questionIds, currentIndex, answers: nextAnswers, finished });
+  }
+
+  function handleFinish() {
+    update({ questionIds, currentIndex, answers, finished: true });
   }
 
   function handleTileSelect(index: number) {
@@ -168,11 +185,10 @@ function ExamPage() {
 
           <button
             type='button'
-            onClick={() => goTo(currentIndex + 1)}
-            disabled={isLast}
-            className='cursor-pointer rounded-xl bg-blue-600 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 active:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-50'
+            onClick={isLast ? handleFinish : () => goTo(currentIndex + 1)}
+            className='cursor-pointer rounded-xl bg-blue-600 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 active:bg-blue-800'
           >
-            Dalej
+            {isLast ? "Zakończ" : "Dalej"}
           </button>
         </div>
 

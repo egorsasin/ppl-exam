@@ -31,4 +31,6 @@ export interface ExamSession {
   currentIndex: number;
   /** Chosen original answer index per question (null when not answered yet). */
   answers: (number | null)[];
+  /** Whether the exam has been finished and the result screen is shown. */
+  finished: boolean;
 }

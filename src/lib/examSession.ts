@@ -17,6 +17,7 @@ export function createExamSession(): ExamSession {
     questionIds: picked.map((question) => question.id),
     currentIndex: 0,
     answers: Array<number | null>(picked.length).fill(null),
+    finished: false,
   };
 }
 
