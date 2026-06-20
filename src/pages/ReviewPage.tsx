@@ -135,7 +135,7 @@ function ReviewPage() {
               question={question}
               options={options}
               selectedIndex={selectedIndex}
-              revealResult
+              revealResult={answered}
               onSelect={handleSelect}
             />
 

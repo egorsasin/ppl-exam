@@ -10,8 +10,8 @@ function QuestionCard({
   revealResult,
   onSelect,
 }: QuestionCardProps) {
-  // In review mode the choice is locked once made; in exam mode it can change.
-  const locked = revealResult && selectedIndex !== null;
+  // When the result is revealed the choice is read-only; otherwise it can change.
+  const locked = revealResult;
 
   return (
     <article className='flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm'>

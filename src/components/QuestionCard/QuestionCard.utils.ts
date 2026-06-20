@@ -17,9 +17,8 @@ export function getOptionClass(
   revealResult: boolean,
 ): string {
   const isSelected = option.originalIndex === selectedIndex;
-  const isAnswered = selectedIndex !== null;
 
-  if (revealResult && isAnswered) {
+  if (revealResult) {
     if (option.isCorrect) {
       return `${BASE_OPTION_CLASS} border-green-500 bg-green-50 text-green-900`;
     }

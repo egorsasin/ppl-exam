@@ -88,9 +88,9 @@ function ExamPage() {
   if (finished) {
     return (
       <main className='flex min-h-dvh w-full justify-center bg-gray-50 px-4 py-6'>
-        <div className='flex w-full max-w-md flex-col gap-4'>
+        <div className='flex w-full max-w-3xl flex-col gap-4'>
           <div className='self-start'>{homeButton}</div>
-          <ExamResult onRestart={handleStart} />
+          <ExamResult session={session} onRestart={handleStart} />
         </div>
       </main>
     );

@@ -9,6 +9,9 @@ const STORAGE_KEY = "ppl-exam-session";
 /** Number of questions in a single exam attempt. */
 export const EXAM_SIZE = 28;
 
+/** Minimum percentage of correct answers required to pass the exam. */
+export const PASS_PERCENT = 75;
+
 /** Builds a new exam session with a random selection of questions. */
 export function createExamSession(): ExamSession {
   const picked = shuffle(questions).slice(0, EXAM_SIZE);
