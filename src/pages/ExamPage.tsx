@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 
 import ExamResult from "../components/ExamResult";
 import QuestionCard from "../components/QuestionCard";
 import QuestionMap from "../components/QuestionMap";
+import { getSectionById } from "../config/sections";
 import {
   clearExamSession,
   createExamSession,
@@ -31,29 +32,36 @@ function ExamStartScreen({ onStart }: { onStart: () => void }) {
 }
 
 function ExamPage() {
+  const { sectionId } = useParams<{ sectionId: string }>();
+  const section = getSectionById(sectionId ?? "");
+
   const [session, setSession] = useState<ExamSession | null>(() =>
-    loadExamSession(),
+    sectionId ? loadExamSession(sectionId) : null,
   );
   const [mapOpen, setMapOpen] = useState(false);
 
+  if (!section) {
+    return <Navigate to='/' replace />;
+  }
+
   function update(next: ExamSession) {
     setSession(next);
-    saveExamSession(next);
+    saveExamSession(next, section!.id);
   }
 
   function handleStart() {
-    update(createExamSession());
+    update(createExamSession(section!.questions, section!.examSize));
   }
 
   function handleAbandon() {
-    clearExamSession();
+    clearExamSession(section!.id);
     setSession(null);
   }
 
-  const homeButton = (
+  const backButton = (
     <Link
-      to='/'
-      aria-label='Strona główna'
+      to={`/${section.id}`}
+      aria-label='Wróć do działu'
       className='inline-flex cursor-pointer rounded-xl border border-gray-200 bg-white p-2.5 text-gray-700 shadow-sm hover:bg-gray-50'
     >
       <svg
@@ -76,7 +84,7 @@ function ExamPage() {
     return (
       <main className='flex min-h-dvh w-full justify-center bg-gray-50 px-4 py-6'>
         <div className='flex w-full max-w-md flex-col gap-4'>
-          <div className='self-start'>{homeButton}</div>
+          <div className='self-start'>{backButton}</div>
           <ExamStartScreen onStart={handleStart} />
         </div>
       </main>
@@ -89,15 +97,19 @@ function ExamPage() {
     return (
       <main className='flex min-h-dvh w-full justify-center bg-gray-50 px-4 py-6'>
         <div className='flex w-full max-w-3xl flex-col gap-4'>
-          <div className='self-start'>{homeButton}</div>
-          <ExamResult session={session} onRestart={handleStart} />
+          <div className='self-start'>{backButton}</div>
+          <ExamResult
+            session={session}
+            questions={section.questions}
+            onRestart={handleStart}
+          />
         </div>
       </main>
     );
   }
 
   const total = questionIds.length;
-  const question = getQuestionById(questionIds[currentIndex]);
+  const question = getQuestionById(section.questions, questionIds[currentIndex]);
   const options = question ? toExamAnswers(question) : [];
   const selected = answers[currentIndex];
   const isFirst = currentIndex === 0;
@@ -131,7 +143,7 @@ function ExamPage() {
     <main className='flex min-h-dvh w-full justify-center bg-gray-50 px-4 py-6'>
       <div className='flex w-full max-w-3xl flex-col gap-4'>
         <div className='flex items-center justify-between'>
-          {homeButton}
+          {backButton}
 
           <button
             type='button'

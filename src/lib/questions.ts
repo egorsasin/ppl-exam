@@ -1,16 +1,12 @@
-import questionsData from "../../data/data.json";
 import type { AnswerOption, Question } from "../types";
 import { shuffle, shuffleWithSeed } from "./shuffle";
 
-const questions = questionsData as Question[];
-
-const questionById = new Map<number, Question>(
-  questions.map((question) => [question.id, question]),
-);
-
-/** Looks up a question by its unique id. */
-export function getQuestionById(id: number): Question | undefined {
-  return questionById.get(id);
+/** Looks up a question by its unique id within a section's question list. */
+export function getQuestionById(
+  questions: Question[],
+  id: number,
+): Question | undefined {
+  return questions.find((q) => q.id === id);
 }
 
 /** Builds the answer options, keeping each one's original index and correctness. */

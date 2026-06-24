@@ -6,9 +6,9 @@ import type { ExamResultProps } from "./ExamResult.types";
 
 const noop = () => {};
 
-function ExamResult({ session, onRestart }: ExamResultProps) {
+function ExamResult({ session, questions, onRestart }: ExamResultProps) {
   const items = session.questionIds.map((id, index) => {
-    const question = getQuestionById(id);
+    const question = getQuestionById(questions, id);
     return {
       question,
       options: question ? toExamAnswers(question) : [],
